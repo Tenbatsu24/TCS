@@ -766,16 +766,79 @@ Above with n
 \subsubsection{Fetch Execute Cycle}
 \begin{enumerate}
     \item Fetch
+    \begin{enumerate}
+        \item From Registers
+    \end{enumerate}
     \item Decode
     \item Operand
+    \begin{enumerate}
+        \item From GPR (General Purpose Registers)
+        \item Also use ACC (Accumulator)
+    \end{enumerate}
     \item Execute/Store
+    \begin{enumerate}
+        \item In Memory
+        \item Display on computer (any I/O)
+    \end{enumerate}
     \item Next
+    \begin{enumerate}
+        \item Using PC (Program Counter)
+    \end{enumerate}
 \end{enumerate}
+
+\subsubsection{RPN- Calculation using Stack}
+\begin{enumerate}
+    \item Find relation put write togethor ending with relation
+    \item $\frac{2+7}{3} + (100 * 9)$
+    \item res = 2 5 + 3 / 100 9 * +
+    \begin{enumerate}
+        \item store 2
+        \item store 7
+        \item add
+        \item store 3
+        \item divide by 3 and store into stack
+        \item store 100
+        \item store 9
+        \item multiply 100 and 9 and store
+        \item add last two entries on stack
+        \item output result = 903
+    \end{enumerate}
+\end{enumerate}
+
+\subsubsection{Endianess}
+\begin{enumerate}
+    \item If value read into memory left to right, then big endianess, so the first char has the lowest address in a stack.
+    \item if value read into memory right to left, then small endianess, so the first char has the highest address in  a stack.
+\end{enumerate}
+
+\subsubsection{Aligned Memory}
+\begin{enumerate}
+    \item Use the same leading bits for first n-m bits where m < n, then we can access m memory cells at the same time to get all bits of the data split over these memory cells.
+\end{enumerate}
+
 \subsubsection{CISC and RISC}
 \paragraph{CISC}
-Complex Instruction Set Circuit
+Complex Instruction Set Computer
+
+\begin{enumerate}
+    \item Code Size is prioritised:
+    \begin{enumerate}
+        \item Variable length codes
+        \item hardware dependant
+        \item variable clock cycles
+        \item can perform complex tasks
+        \item Many addressing modes
+    \end{enumerate}
+\end{enumerate}
 
 \paragraph{RISC}
-Reduced Instruction Circuit
+Reduced Instruction Computer
+    \begin{enumerate}
+        \item Constant length codes
+        \item software dependant
+        \item 1 clock cycle length tasks
+        \item can perform simple tasks only
+        \item Simple addressing Mode
+    \end{enumerate}
 
 \end{document}
