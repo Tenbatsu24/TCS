@@ -611,4 +611,171 @@ Above with n
     \end{figure}
 \end{enumerate}
 
+\section{Lecture 4}
+\subsection{Signed and Unsigned Addition}
+\subsubsection{Unsigned Number}
+\begin{enumerate}
+    \item Same as decimal addition.
+    \item In case of overflow, number can not be represented.
+\end{enumerate}
+\subsubsection{Full Adder/Ripple Carry Adder}
+\begin{enumerate}
+    \item CarryIn
+    \item inA and inB
+    \item SumOut
+    \item Carry Out
+    \item We can use Karnaugh Map to find Logic of SumOut and CarryOut with the three inputs.
+    \item Delay: $N*2\delta$ where $2\delta$ is the delay of one adder, so N bit adder have N times.
+\end{enumerate}
+\subsubsection{Signed Numbers}
+\begin{enumerate}
+    \item MSB has negative weight
+    \begin{enumerate}
+        \item So, 011+110 = 3 - 2 = 1
+        \item but adding also gives the same since Carry is positive 1 not negative weight.
+    \end{enumerate}
+    \item Can use FA, where final carry out is ignored.
+\end{enumerate}
+\subsubsection{Overflows}
+\begin{enumerate}
+    \item A positive number and negative number can never result in overflow.
+    \item Only both positive or both negative numbers can.
+\end{enumerate}
+\subsubsection{Detecting Overflows}
+\begin{enumerate}
+    \item Using Karnaugh Map and finsind logic.
+    \item Sign Bit Extension
+    \begin{figure}[H]
+        \centering
+        \includegraphics[width = \textwidth]{Module 5/Notes/Pictures/Overflow Detection.png}
+    \end{figure}
+\end{enumerate}
+\subsubsection{Adding Different Length}
+\begin{enumerate}
+    \item Sign Extend shortest operand
+\end{enumerate}
+\subsubsection{Addition and Subtraction using FA}
+\begin{enumerate}
+    \item XOR the bits with mode, and set $C_{0}$ to the mode where 0 is addition and 1 is subtraction.
+\end{enumerate}
+\subsection{How computers use this for programs}
+\subsubsection{Status bits}
+\begin{enumerate}
+    \item N - negative: The output of final SOut
+    \item V - Overflow: XOR of last two carry bits
+    \item Z - Zero: NOR all SOuts
+    \item C - Carry: The final Carry Out
+\end{enumerate}
+\subsection{Unsigned Multiplcation}
+\subsubsection{In process}
+\begin{enumerate}
+    \item It easy, just remember that multiplying by two shifts the bits to the left, similarly dividing by 2 shifts bits to right.
+    \item but What about hardware?
+\end{enumerate}
+\subsubsection{In Hardware}
+\begin{enumerate}
+    \item Shift Add Algorithm \textbf{Combinatorial}
+    \begin{figure}[H]
+        \centering
+        \includegraphics[width = \textwidth]{Module 5/Notes/Pictures/Shift-Add.png}
+    \end{figure}
+    \item Shift Add Algorithm \textbf{Sequential}
+    \begin{figure}[H]
+        \centering
+        \includegraphics[width = \textwidth]{Module 5/Notes/Pictures/Sequetial Mul.png}
+        \caption{Clock Cycles = 1 + 2*N, where N is the number of bits and 1 is for init}
+    \end{figure}
+\end{enumerate}
+\subsubsection{Signed Multiplication}
+\textbf{Not part of CAO for TCS}
+\subsection{Processor}
+\begin{figure}[H]
+    \centering
+    \includegraphics[width = \textwidth]{Module 5/Notes/Pictures/Incomplete Simple Processor.png}
+\end{figure}
+\subsubsection{Parts}
+\paragraph{Data Path}
+\begin{enumerate}
+    \item ALU
+    \item Buses
+    \item Multiplexors
+    \item Registers
+\end{enumerate}
+\paragraph{Controller}
+\begin{enumerate}
+    \item Function
+    \begin{enumerate}
+        \item Determines What Operation
+        \item Receives Status Information from datapth
+    \end{enumerate}
+    \item Types
+    \begin{enumerate}
+        \item Hard Wired (FSM)
+        \item Micro-Programmed (More Flexible)
+        \begin{figure}[H]
+            \centering
+            \includegraphics[width = \textwidth]{Module 5/Notes/Pictures/Advantages of Micro-Programming.png}
+        \end{figure}
+    \end{enumerate}
+\end{enumerate}
+\paragraph{Registers}
+\begin{figure}[H]
+    \centering
+    \includegraphics[width = \textwidth]{Module 5/Notes/Pictures/Register File.png}
+\end{figure}
+\paragraph{Shifter}
+\begin{figure}[H]
+    \centering
+    \includegraphics[width = \textwidth]{Module 5/Notes/Pictures/Barrel Shifter.png}
+\end{figure}
+
+\section{Lecture 5}
+\subsection{Stack}
+\begin{enumerate}
+    \item LiFO
+    \item POP, PUSH
+    \item Most processors have a special stack pointer
+    \item Where does the pointer point?
+    \begin{enumerate}
+        \item Last Occupied or next free?
+        \item Last Full
+        \begin{enumerate}
+            \item SP += 1
+            \item Mem[SP] = Reg
+        \end{enumerate}
+        \item Next Empty
+        \begin{enumerate}
+            \item Mem[SP] = Reg
+            \item SP += 1
+        \end{enumerate}
+    \end{enumerate}
+    \item How does Stack grow?
+    \begin{enumerate}
+        \item Small to Big
+        \begin{enumerate}
+            \item always
+        \end{enumerate}
+    \end{enumerate}
+\end{enumerate}
+
+\subsection{ISA}
+\begin{figure}[H]
+    \centering
+    \includegraphics[width = \textwidth]{Module 5/Notes/ISA.png}
+\end{figure}
+\subsubsection{Fetch Execute Cycle}
+\begin{enumerate}
+    \item Fetch
+    \item Decode
+    \item Operand
+    \item Execute/Store
+    \item Next
+\end{enumerate}
+\subsubsection{CISC and RISC}
+\paragraph{CISC}
+Complex Instruction Set Circuit
+
+\paragraph{RISC}
+Reduced Instruction Circuit
+
 \end{document}
