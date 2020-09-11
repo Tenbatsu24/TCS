@@ -1,0 +1,13 @@
+(ARCTools Version 2.1.2)
+ HexLoc     DecLoc    MachWord   Label        Instruction                Comment
+                                              .org 0                     
+00000000  0000000000  c2002014                ld [20], %r1               
+00000004  0000000004  82a00001                subcc %r0, %r1, %r1        
+00000008  0000000008  0c800002                bneg 2                     
+0000000c  0000000012  c2202014                st %r1, [20]               
+00000010  0000000016  ffffffff  over:         halt                       
+00000014  0000000020  fffffff6  x:                                       
+
+--- Symbol Table ---
+x: 20
+over: 16
