@@ -1,4 +1,6 @@
-\documentclass[11pt, a4paper]{article}
+\documentclass[12pt]{book}
+\usepackage[colorlinks=true,linkcolor=blue,urlcolor=black]{hyperref}
+\usepackage{bookmark}
 \usepackage[margin=1in]{geometry}
 \usepackage{graphicx}
 \usepackage{float}
@@ -12,8 +14,8 @@
 \begin{document}
 
 \maketitle
-\section{Chapter 1: Foundation}
-\subsection{Applications}
+\chapter{Chapter 1: Foundation}
+\section{Applications}
 \begin{enumerate}
     \item VOIP- Voice Over Internet Protocol
     \item Streaming
@@ -21,9 +23,9 @@
     Downloading pages from the internet.
     \item Video Calls
 \end{enumerate}
-\subsection{Requirements of the Applications}
+\section{Requirements of the Applications}
 This section is about why are networks made the way they are, and not why they should be done in only one particular way. As time and needs progress the way networks work may change. 
-\subsubsection{Shareholders}
+\subsection{Shareholders}
 First, we shall look at the requirements "from" a network from three different perspectives of shareholders.
 \begin{enumerate}
     \item Application Programmer:
@@ -32,7 +34,7 @@ First, we shall look at the requirements "from" a network from three different p
     \item Network designer: Efficiency, usability, performance are the key topics here.
 \end{enumerate}
 
-\subsubsection{Scalability}
+\subsection{Scalability}
 Networks in general should be scalable, i.e. it should be possible to add more nodes to the network without affecting the network, for example, having to close down the network temporarily, or even without a drop of performance, and not effecting other users while removal or addition.
 \begin{enumerate}
     \item BAD:
@@ -51,7 +53,7 @@ Notice in the GOOD section, we have network topologies that do have some problem
 
 General Note: Two nodes need not have a direct link between them, but even an indirect link through several nodes. In such a scenario it is easy to see how using existing connections in start network or P2P, outweigh something like Mesh, or Bus. 
 
-\subsubsection{Cost Effective Resource Sharing}
+\subsection{Cost Effective Resource Sharing}
 Hosts on a network have to share its resources, the resource we are most interested in is the data transmission medium (usually a copper cable, optic fibre or radio waves), this sharing is called multiplexing, which means that a system resource is shared among multiple users. At an intuitive level, multiplexing can be explained by analogy to a timesharing computer system, where a single physical processor is shared (multiplexed) among multiple jobs, each of which believes it has its own private processor. Similarly, data being sent by multiple users can be multiplexed over the physical links that make up a network.
 
 There are different ways of sharing resources under two different schemes:
@@ -104,14 +106,14 @@ The network obviously needs to ensure the proper packetisation of data, to ensur
 
 This does not mean that Circuit Switching is useless though, in some instances it may be more essential to have a dedicated connection rather than efficiency of resource sharing, but then networks likely need to be catered for such applications.
 
-\subsubsection{Support for Common Services}
+\subsection{Support for Common Services}
 Think of WhatsApp, Messenger, Viber(?). They are all text messaging applications, or at least have that as one of their functions. The network needs to ensure that one instance of any of those application can communicate with another instance of the application. THis could be implmented all in the application itself, from protocol to creation of bits, but if they are all going to be doing the same tasks, (ask for authentication, generate bits using the same scheme, have IP addresses and so on) it makes sense to put it rather in the network implmentation. This is where layering comes in. The challenge is to find those abstractions which allow the greatest range of applications to be implemented, without constraining the Application Developer (If they had ocntrol of all parts they could do anything they wanted, the fact you take things away from their control may restrict them).\\
 For example, does the application require a guarantee that messages sent over the channel are delivered, or is it acceptable if some messages fail to arrive? Is it necessary that messages arrive at the recipient process in the same order in which they are sent, or does the recipient not care about the order in which messages arrive? Does the network need to ensure that no third parties are able to eavesdrop on the channel, or is privacy not a concern? In general, a network provides a variety of different types of channels, with each application selecting the type that best meets its needs. The rest of this section illustrates the thinking involved in defining useful channels.
 
-\subsubsection{Identify Common Communication Patterns}
+\subsection{Identify Common Communication Patterns}
 How different are two applications. FTP/NFS they both transfer files but just in different ways, the entire file or in blocks. The underlying technology of sending the file (data) is not different. The network need to be concerned with the specifics but only the similarity.
 
-\subsubsection{Reliable Message Delivery}
+\subsection{Reliable Message Delivery}
 The causes why the message may not be delivered as sent/requested (apart from hacker activity)
 \begin{enumerate}
     \item Packet may switch bits over the link: noise, radiation. How can flip the bit maybe? Does it need to be discarded.
@@ -119,7 +121,7 @@ The causes why the message may not be delivered as sent/requested (apart from ha
     \item The node and link layer may lose connection: Power Outage, mis-configuration of the network, reckless operator.
 \end{enumerate}
 
-\subsubsection{Manageability}
+\subsection{Manageability}
 Network system need to be manageable. This includes:
 \begin{enumerate}
     \item How to keep track of addresses?
@@ -130,8 +132,8 @@ Network system need to be manageable. This includes:
 
 A general ideology is used to keep away when it works, which promotes a slow progress in features available as stability is more focused upon.
 
-\subsection{Architecture}
-\subsubsection{Layering and Protocols}
+\section{Architecture}
+\subsection{Layering and Protocols}
 Layering provides two benefits:
 \begin{enumerate}
     \item First, it decomposes the problem of building a network into more manageable components. Rather than implementing a monolithic piece of software that does everything you will ever want, you can implement several layers, each of which solves one part of the problem. 
@@ -154,13 +156,13 @@ But these details are not important, what is important is to understand that in 
 
 To further understand how layering is actually implemented despite so many protocols, we look at encapsulation.
 
-\subsubsection{Encapsulation}
+\subsection{Encapsulation}
 The only thing to get in this subsubsection is what are headers. Application Layer collects data to be sent. Transport Layer packetises everything and adds a header $\to$ giving each packet a dest. and src. port packet number, checksum and relevant data in the header. The network protocol adds IP addresses, tolive, IP version, frgamentation limit and so on it its header, and so on for each protocol that is encountered. This adding of headers upon headers is the essence and what encapsulation is. The peer need not read the entire thing, strip of the header and pass along if the packet is of the node on the network.
 
-\subsubsection{Multiplexing and Demultiplexing}
+\subsection{Multiplexing and Demultiplexing}
 Since we are considering archtecture it is appropriate to think about how a network handles Multiplexing and Demultiplexing. Simple: Using keys. Each application would generate jeys, or even multiple keys either specific for that connection or some other arbitrary way and pass that along in the protocol being used (RRP or MSP), according to the application's implementation of the protocol (as applications care only about intra application communication, yes there is PC XBOX cross-platform gaming but those are special cases where they may use some sort of translators) and then communicate. These are called demux keys.
 
-\subsubsection{Internet Architecture}
+\subsection{Internet Architecture}
 
 (We will not discuss the 5 layers of internet here:
 Application, Transport, Network, Link, Physical. These are talked about all the time anyway.)
@@ -173,10 +175,10 @@ Since internet is a part of the network, we shall give a brief of description of
     \item A final attribute of the Internet architecture (or more accurately, of the IETF culture) is that in order for a new protocol to be officially included in the architecture, there must be both a protocol specification and at least one (and preferably two) representative implementations of the specification. The existence of working implementations is required for standards to be adopted by the IETF. This cultural assumption of the design community helps to ensure that the architecture’s protocols can be efficiently implemented.
 \end{enumerate}
 
-\subsection{Software}
-\subsection{Performance}
+\section{Software}
+\section{Performance}
 Time for some calculation now.
-\subsubsection{Bandwidth and Latency}
+\subsection{Bandwidth and Latency}
 What is quick?
 \begin{enumerate}
     \item I can get big files quick- High Bandwidth (throughput)\\
@@ -196,14 +198,14 @@ What is quick?
 \end{enumerate}
 Note: RTT not same as 2 x One way trip, we will see why. Although in many instances it can give a good approximation.
 
-\subsubsection{DBP- Delay Bandwidth Product}
+\subsection{DBP- Delay Bandwidth Product}
 (Personal Note- In middle school we had this question which revolved around thinking of time as a length and the rate of flow as the width, so their product gave us the volume. If we talk about the units $m^{3}s^{-1} * s = m^{3}$, i.e. the volume)
 
 Using my personal note, I hope it is clear then why I say this Delay Bandwidth Product is actually the number of bits this pipe is carrying (amount of water in the pipe). The bandwidth is the flow rate, and the delay is the time the bits stay in the pipe for, hence you can not add more bits to the pipe in that frame since we are travelling at the max flow rate. Using this analogy we understand why the delay product is a good measure of performance.//
 This should not be confused with the DBP giving an indication on how good a particular network is in only one of the metrics. High BDP could simply mean a very high delay time, similarly a low DBP could mean a very low delay time. This serves kind of like a general view on how good something is, overall.
 
 Let us look at some examples:
-\subsubsection{Q1}
+\subsection{Q1}
 Handshake = 0.1s
 B = 1.5MBps
 L = 1000Kb
@@ -220,7 +222,7 @@ Find total delay if sent continuously.
     \item total delay = 5.586s
 \end{enumerate}
 (Note we talking about bits, do not forget to convert from bytes to bits)
-\subsubsection{Q2}
+\subsection{Q2}
 after every packet is sent we will wait for 1RTT.
 this is where we must understand the distinction between different delays, namely, Transmission Delay and Propagation delay.
 \begin{enumerate}
@@ -240,7 +242,7 @@ Calc:
 
 (No shortcut please, add everything slowly slowly).
 
-\subsubsection{Throughput calculations.}
+\subsection{Throughput calculations.}
 
 Throughput = TransferSize / TransferTime \\
 TransferTime = RTT + TransferSize/Bandwidth\par
@@ -262,9 +264,9 @@ Q3) 12000bit packets are sent only after getting a 50byte ack from receiver on a
 
 One last thing to consider is there may be times when transmission times are actually so low, that RTT ends up determining the delay entirely (especially when very high transmission cables are used).
 
-\section{Chapter 2: Direct Links}
+\chapter{Chapter 2: Direct Links}
 
-\subsection{Encoding}
+\section{Encoding}
 
 Things we are worried about.
 \begin{enumerate}
@@ -272,22 +274,22 @@ Things we are worried about.
     \item clock recovery: The receiver derives the clock from the received signal—the clock recovery process. Whenever the signal changes, such as on a transition from 1 to 0 or from 0 to 1, then the receiver knows it is at a clock cycle boundary, and it can re-synchronize itself. However, a long period of time without such a transition leads to clock drift.
 \end{enumerate}
 
-\subsubsection{NRZ}
+\subsection{NRZ}
 Non-Return to Zero: basically high is 1, low is zero, nothing special. Solves nothing: long length of 0/1 possible.
 
-\subsubsection{NRZI}
+\subsection{NRZI}
 non-return to zero inverted: toggle if 1 on the clock, and if 0 then just there. Solves long length of 1's. Problem: what if long length of zeroes. (Solved using 4B/5B).
 
-\subsubsection{Manchester}
+\subsection{Manchester}
 Clock XOR NRZ data.\\
 It doubles the transition rate of 1 $\to$ 0 and 0 $\to$ 1. The rate of transition is called baud rate. The bit rate is half of this. So in essence, the efficiency is half since the receiver is working twice the amount to get half the data. (This is the case only if you have 2 "symbols" high and low. Having more allows more data to be transmitted, which allows bit rate to be even higher than baud rate, so efficiency is 2x or more. Look up QAM).
 
-\subsubsection{4B/5B and 8B/10B}
+\subsection{4B/5B and 8B/10B}
 Use 5 bits to represent a data of 4 bits, and 10 for 8. The mapping is used to eliminate the long lengths of 0's and 1's which result in baseline wander. Three consecutive zero bits only appear in normal data when a code ending with two 0 bits (2, E) is followed by a code beginning with a 0 bit (1, 4, 5, 6), so will always appear separated by multiples of the 5-bit encoded symbol length (and never separated by a single symbol) i.e. no code has more than 2 zero at the start and more than 1 zero at beginning. Then transmit using NRZI. Since only 1 extra bit sent, the efficiency is 80\%.
 
-\subsection{Framing}
+\section{Framing}
 How to know the bits collected by the adapter form a complete frame? Remember, the networks communicate with frames not series of bits.
-\subsubsection{Byte Oriented Protocol}
+\subsection{Byte Oriented Protocol}
 Recent example of this is Point-to-Point Protocol (PPP). Two approaches to implement this.
 \begin{enumerate}
     \item Sentinel Characters: STX, ACK, ETX stuff like this are put for beginning of frame, ending of frame. What if they appear in text. We use Data Link Escape (DLE) character. In \LaTeX we preceed comment or mathematical operator using backslash to ensure not to go to math mode \^, \%. Called character stufing.
@@ -295,7 +297,7 @@ Recent example of this is Point-to-Point Protocol (PPP). Two approaches to imple
 \end{enumerate}
 The internet protocol uses Sentinel Characters with character stuffing. The PPP frame is negotiated using Link Control Protocol (LCP) which is a frame itself sent over in PPP frame.
 
-\subsubsection{Bit Oriented Protocol}
+\subsection{Bit Oriented Protocol}
 The Synchronous Data Link Control (SDLC) protocol developed by IBM is an example of a bit-oriented protocol; SDLC was later standardized by the ISO as the High-Level Data Link Control (HDLC) protocol.\\
 
 HDLC denotes both the beginning and the end of a frame with the distinguished bit sequence 01111110. This sequence is also transmitted during any times that the link is idle so that the sender and receiver can keep their clocks synchronized. Because this sequence might appear anywhere in the body of the frame—in fact, the bits 01111110 might cross byte boundaries—bit-oriented protocols use the analog of the DLE character, a technique known as bit stuffing: \begin{enumerate}
@@ -306,7 +308,7 @@ HDLC denotes both the beginning and the end of a frame with the distinguished bi
 
 Both Bit/Byte Oriented Protocol have variable frame length due to their being stuffing. Next one is not variable length.
 
-\subsubsection{Clock Based Framing}
+\subsection{Clock Based Framing}
 A third approach to framing is exemplified by the Synchronous Optical Network (SONET) standard. SONET is very bid and can be covered in a book of itself. Also, SONET addresses both the framing problem and the encoding problem. It also addresses a problem that is very important for phone companies—the multiplexing of several low-speed links onto one high-speed link. (In fact, much of SONET’s design reflects the fact that phone companies have to be concerned with multiplexing large numbers of the 64-kbps channels that traditionally are used for telephone calls).
 
 read implementation from the book.
@@ -342,12 +344,12 @@ Key Points:
     \label{fig:my_label}
 \end{figure}
 
-\subsection{Error Detection}
-\subsubsection{Checksum}
+\section{Error Detection}
+\subsection{Checksum}
 Sum up the messages, discard overhead, transmit with block. Nothing to write about. This is a simple error detection technique, which is not even the most efficient.
-\subsubsection{Parity Check}
+\subsection{Parity Check}
 Look up in the reader. Should be familiar with the process of doing this, nothing to write about. Look up in the reader.
-\subsubsection{CRC- Circular Redundancy Check}
+\subsection{CRC- Circular Redundancy Check}
 The polynomial arithmetic, long division, XOR-ing. Look up in th reader. Process summarized below.
 \begin{enumerate}
     \item M(x) = message polynomial
@@ -358,7 +360,7 @@ The polynomial arithmetic, long division, XOR-ing. Look up in th reader. Process
     \item send
     \item recalculate $\to$ if not remainder 0, then problem.
 \end{enumerate}
-\subsubsection{Shannon's Mathematical Theory of Communication}
+\subsection{Shannon's Mathematical Theory of Communication}
 Only main topics are noted, most of this is intuition based and all formulae, nothing to write, other than reminding that these topics exist.
 \begin{enumerate}
     \item Channel Capacity
@@ -368,7 +370,7 @@ Only main topics are noted, most of this is intuition based and all formulae, no
     \item Error Detection vs Error Correction (i.e. which has more overhead).
     \item Entropy of a message * number of messages/s = information in message * messages/s = avg. no of bits per message * messages / s = avg number of bits / s.
 \end{enumerate}
-\subsection{Reliable Transmission}
+\section{Reliable Transmission}
 Two things to be concerned about:
 Reliable delivery is usually accomplished using a combination of two fundamental mechanisms—acknowledgments and timeouts. An acknowledgment (ACK for short) is a small control frame that a protocol sends back to its peer saying that it has received an earlier frame. By control frame we mean a header without any data, although a protocol can piggyback an ACK on a data frame it just happens to be sending in the opposite direction. The receipt of an acknowledgment indicates to the sender of the original frame that its frame was successfully delivered. If the sender does not receive an acknowledgment after a reasonable amount of time, then it retransmits the original frame. This action of waiting a reasonable amount of time is called a timeout.
 \begin{enumerate}
@@ -383,8 +385,8 @@ Rest of the section discusses the algorithms for ack/timeout.
     \item Sliding Window (please be familiar with all the acronyms- LAR, LFS, SWS -- LAS, LAF, RWS)
 \end{enumerate}
 
-\subsection{Multi-Access Networks}
-\subsubsection{Physical Properties of Ethernet}
+\section{Multi-Access Networks}
+\subsection{Physical Properties of Ethernet}
 \begin{enumerate}
     \item CSMA\textbackslash CD Carrier Sense Multi Access, Collision Detection
     \item Repeaters
@@ -392,7 +394,7 @@ Rest of the section discusses the algorithms for ack/timeout.
     \item single length is only 500m, so up to 4 repeaters max.
 \end{enumerate}
 
-\subsubsection{Access Protocol}
+\subsection{Access Protocol}
 \begin{enumerate}
     \item Frame Format:
     \begin{enumerate}
@@ -408,7 +410,7 @@ Rest of the section discusses the algorithms for ack/timeout.
     \end{enumerate}
 \end{enumerate}
 
-\subsubsection{Transmitter Algorithm}
+\subsection{Transmitter Algorithm}
 \begin{enumerate}
     \item if idle send. Maximal length of frame = 1500 bytes (for fairness).
     \item if busy, calc random time, wait random time, try again. Uses Exponential Backoff.
@@ -422,17 +424,17 @@ Rest of the section discusses the algorithms for ack/timeout.
     \end{figure}
 \end{enumerate}
 
-\subsection{Wireless Networks}
-\subsubsection{Medium}
+\section{Wireless Networks}
+\subsection{Medium}
 read from reader, and slide mostly.
 
-\subsubsection{Spread Spectrum}
+\subsection{Spread Spectrum}
 \begin{enumerate}
     \item Frequency Hopping: Using a pseudorandom number generator (prng), jump to different frequency. The reciever has the same algorithm for the prng and so can follow the signal. Originally, Wifi typically uses 79- 1 MHZ bandwidth signals to jump across, all in 2.4GHz range.
     \item Direct Sequence Spread Spectrum: use a prng to create a chipping code. Use this code to encode the data to send. Originally, Wifi typically uses 11 bit chip code. If reciever does not have the same prng, the recieval is seen as random. This is called scrambling. Typically 1 bit is encoded to a length of 4, and then chip code is used to encode these 4 repated bits. Having more bits also increases tolerance to interference.
 \end{enumerate}
 
-\subsubsection{Different Methods of making connection}
+\subsection{Different Methods of making connection}
 \begin{enumerate}
     \item Base Station: Router, nodes can not communicate directly. The base station as it were, has no mobility, it meant to stay fixed. All communication occurs through it.
     \begin{figure}[H]
@@ -450,10 +452,10 @@ read from reader, and slide mostly.
     \end{figure}
 \end{enumerate}
 
-\subsubsection{Current Wifi}
+\subsection{Current Wifi}
 The technology today allows for greater speed and bandwidths. It is worth noting that while all the 802.11 standards define a maximum bit rate that can be supported, they mostly support lower bit rates as well (e.g., 802.11a allows for bit rates of 6, 9, 12, 18, 24, 36, 48, and 54 Mbps). At lower bit rates, it is easier to decode transmitted signals in the presence of noise. Different modulation schemes are used to achieve the various bit rates. In addition, the amount of redundant information in the form of error-correcting codes is varied. More redundant information means higher resilience to bit errors at the cost of lowering the effective data rate (since more of the transmitted bits are redundant). Since this is factual, read from the book.
 
-\subsubsection{Collision Avoidance}
+\subsection{Collision Avoidance}
 Two problems:
 \begin{enumerate}
     \item Hidden Node Problem:
@@ -478,7 +480,7 @@ Two problems:
     \item Obviously Collisions of RTS are possible, but if CTS is not received after a while, the nodes can always try again later on, using exponential backoff.
 \end{enumerate}
 
-\subsubsection{Distribution System}
+\subsection{Distribution System}
 These are used by AP's as mentioned above.
 \begin{enumerate}
     \item Nodes can talk to nodes in range. What about outside? They talk to Distribution network, and node is sent to the node which far, but connected to the Wifi.
@@ -492,7 +494,7 @@ These are used by AP's as mentioned above.
     A node engages this protocol whenever it joins the network, as well as when it becomes unhappy with its current AP. This might happen, for example, because the signal from its current AP has weakened due to the node moving away from it. Whenever a node acquires a new AP, the new AP notifies the old AP of the change (this happens in step 4) via the distribution system.
 \end{enumerate}
 
-\subsubsection{Wifi Frame Format}
+\subsection{Wifi Frame Format}
 \begin{figure}[H]
     \centering
     \includegraphics[width = \textwidth]{Pictures/Wifi Frame Format.png}
@@ -501,12 +503,12 @@ These are used by AP's as mentioned above.
 \end{figure}
 The peculiar thing about the 802.11 frame format is that it contains four, rather than two, addresses. How these addresses are interpreted depends on the settings of the ToDS and FromDS bits in the frame’s Control field. This is to account for the possibility that the frame had to be forwarded across the distribution system, which would mean that the original sender is not necessarily the same as the most recent transmitting node. Similar reasoning applies to the destination address. In the simplest case, when one node is sending directly to another, both the DS bits are 0, Addr1 identifies the target node, and Addr2 identifies the source node. In the most complex case, both DS bits are set to 1, indicating that the message went from a wireless node onto the distribution system, and then from the distribution system to another wireless node. With both bits set, Addr1 identifies the ultimate destination, Addr2 identifies the immediate sender (the one that forwarded the frame from the distribution system to the ultimate destination), Addr3 identifies the intermediate destination (the one that accepted the frame from a wireless node and forwarded it across the distribution system), and Addr4 identifies the original source. Like a traceback.
 
-\subsubsection{Bluetooth}
+\subsection{Bluetooth}
 Slave Devices, Master Devices. Slave Devices can not talk to each other. Bluetooth operates in the license-exempt band at 2.45 GHz. Bluetooth links have typical bandwidths around 1 to 3 Mbps and a range of about 10 m. For this reason, and because the communicating devices typically belong to one individual or group, Bluetooth is sometimes categorized as a Personal Area Network (PAN). Parked devices, and active devices. Once parked can only reactivated by the master device.
 
-\section{Chapter 3: Internetworking}
+\chapter{Chapter 3: Internetworking}
 
-\subsection{Switching Basics}
+\section{Switching Basics}
 How to interconnect nodes on different networks?
 \begin{enumerate}
     \item Connect the switch of the two networks. This is the most usual practice.
@@ -518,7 +520,7 @@ What do we need for networks to communicate?
     \item We need to be able to identify who is connected where, and when we send data, through which it is the best idea to send it through. This is the concept of forwarding table.
 \end{enumerate}
 
-\subsubsection{Datagrams}
+\subsection{Datagrams}
 \begin{enumerate}
     \item Called connection-less way of making networks. 
     \item Each router has a forwarding table (also called routing table), and when a packet comes to it, it just checks where it needs to go, and sends it there. 
@@ -528,7 +530,7 @@ What do we need for networks to communicate?
 \end{enumerate}
 
 
-\subsubsection{Virtual Circuit Switching}
+\subsection{Virtual Circuit Switching}
 \begin{enumerate}
     \item This is called a connection oriented connection.
     \item  The network administrator, or the nodes themselves communicate to fix connection routes.
@@ -551,7 +553,7 @@ What do we need for networks to communicate?
     \item ATM (Asynchrous Transfer Mode) is a nice example.
 \end{enumerate}
 
-\subsubsection{Source Routing}
+\subsection{Source Routing}
 \begin{enumerate}
     \item One last way that networks can communicate is that the source node tells where the packet needs to go, dictating each hop from the source itself at each switch.
     \item It is obvious the problems we can see. Topology shifts, the node needs to have the entire knowledge if the network, that is possible only if everyone is talking to each other ALL the time. Inefficient.
@@ -563,11 +565,11 @@ What do we need for networks to communicate?
     \end{enumerate}
 \end{enumerate}
 
-\subsection{Switched Ethernet}
-\subsubsection{Learning Bridge}
+\section{Switched Ethernet}
+\subsection{Learning Bridge}
 As someone sends to me, I learn where the guy is connected. No need to flood.
 
-\subsubsection{Spanning Tree}
+\subsection{Spanning Tree}
 The network can be seen as a planar graph, from which a spanning tree can be determined. The algorithm can be summarised as:
 \begin{enumerate}
     \item Functional switch with lowest ID is the root.
@@ -577,14 +579,14 @@ The network can be seen as a planar graph, from which a spanning tree can be det
     \item If creation of path creates a cycle, don't create connection.
     \item If all nodes covered, stop.
 \end{enumerate}
-\subsubsection{VLAN}
+\subsection{VLAN}
 These things are not exactly scalable. Imagine flooding a really big network. The solution to do this is augment the network into smaller virtual networks, Instead of the entire network knowing everything about the entire network, it knows more about the small partitions. Then whenever the packet wants to talk to other nodes, in these other virtual networks, the packet is passed and then the that network takes care of it. Obviously more information is added into the header. Uses learning bridges. Packet forwarding does not alter IP or MAC, nothing.
 
-\subsection{Internet IP}
-\subsubsection{Service Model}
+\section{Internet IP}
+\subsection{Service Model}
 Internet protocol is connection less service. This is called best-effort as well. Since connection less, we have datagrams.
 
-\subsubsection{IPv4 Packet Format}
+\subsection{IPv4 Packet Format}
 \begin{figure}[H]
     \centering
     \includegraphics[width = \textwidth]{Pictures/ipv4.png}
@@ -592,7 +594,7 @@ Internet protocol is connection less service. This is called best-effort as well
     \label{fig:my_label}
 \end{figure}
 
-\subsubsection{Fragmentation and Reassembly}
+\subsection{Fragmentation and Reassembly}
 Never reassemble at the intermediate switch.
 \begin{figure}[H]
     \centering
@@ -601,14 +603,14 @@ Never reassemble at the intermediate switch.
     \label{fig:example}
 \end{figure}
 
-\subsubsection{Global Addressing}
+\subsection{Global Addressing}
 \begin{figure}[H]
     \centering
     \includegraphics[width = \textwidth]{Pictures/Addressing.png}
     \caption{Addressing}
     \label{fig:my_label}
 \end{figure}
-\subsubsection{Datagram forwarding in IP}
+\subsection{Datagram forwarding in IP}
 \begin{enumerate}
     \item You have the datagram.
     \item it has an address.
@@ -623,7 +625,7 @@ Never reassemble at the intermediate switch.
     \end{enumerate}
 \end{enumerate}
 
-\subsubsection{Classful Addressing, Classless Addressing, Subnetting}
+\subsection{Classful Addressing, Classless Addressing, Subnetting}
 \begin{enumerate}
     \item Subnetting: \\
     ex: 216.3.128.128 (/25)-- this means the 25 MSB are network address. The rest is host address.//
@@ -650,22 +652,22 @@ Never reassemble at the intermediate switch.
         \label{fig:my_label}
     \end{figure}
 \end{enumerate}
-\subsubsection{DHCP}
+\subsection{DHCP}
 Give the host, an address. Dynamic Host Resolution Protocol.
 
-\subsubsection{ARP}
+\subsection{ARP}
 Address Resolution Protocol. Get the MAC to know where to send the data, so the actual party can identify on the Data link layer it needs to compare the MAC. In this we look at the IP address and check to which router or the node itself I need to send the packet to. So when packets travel over many routers, of different LANs, the MAC addresses change since they are travelling between routers and then finally the node. In case bridges are used, nothing changes, as the the same network is simply broken into many parts and not entirely different networks exist. In the same network the bridges know where to send each MAC.
 
-\subsubsection{Routing}
+\subsection{Routing}
 \begin{enumerate}
     \item RIP: Routing Information Vector. IE Distance vector- Bellman Ford algorithm.
     \item OSPF: Open Shortest Path First. Link State Routing. IE Dijkstra algorithm.
     \item AH OD VR: Ad hoc on demand vector routing. Mobile phones. Dynamic networks- too many changes, too much movement. The routes are made, fixed only when needed as the name suggests, so the orutes are not presistent for too long, which is good for the shifting topology.
 \end{enumerate}
 
-\section{Chapter 4: Advanced Internetworking}
-\subsection{Interdomain routing}
-\subsubsection{Border Gateway Protocol (BGP)}
+\chapter{Chapter 4: Advanced Internetworking}
+\section{Interdomain routing}
+\subsection{Border Gateway Protocol (BGP)}
 \begin{enumerate}
     \item Problem: I do not want to provide a route through me, if I am paying. I want to be able to choose a route which is cheaper, maybe faster, maybe more secure. How can this be done?
     \item How it is done:
@@ -695,11 +697,11 @@ Address Resolution Protocol. Get the MAC to know where to send the data, so the 
     \end{enumerate}
 \end{enumerate}
 
-\subsection{IPv6}
+\section{IPv6}
 
 IPv6 provides a 128-bit address space, as opposed to the 32 bits of version 4. Thus, while version 4 can potentially address 4 billion nodes if address assignment efficiency reaches 100\%, IPv6 can address 3.4 × 1038 nodes, again assuming 100\% efficiency.
 
-\subsubsection{Host Density}
+\subsection{Host Density}
 Max threshold for host density is 87.5\%. This is where it starts getting problematic.
 \begin{figure}[H]
     \centering
@@ -708,7 +710,7 @@ Max threshold for host density is 87.5\%. This is where it starts getting proble
     \label{fig:my_label}
 \end{figure}
 
-\subsubsection{Desirable Features of IPv6}
+\subsection{Desirable Features of IPv6}
 \begin{enumerate}
     \item Support for real-time services
     \item Security support
@@ -716,7 +718,7 @@ Max threshold for host density is 87.5\%. This is where it starts getting proble
     \item Enhanced routing functionality, including support for mobile hosts
 \end{enumerate}
 
-\subsubsection{Address Notation}
+\subsection{Address Notation}
 \begin{enumerate}
     \item 8 pieces of 16 bits represented by 4 Hexadecimals.
     \item Just as with IPv4, there is some special notation for writing down IPv6 addresses. The standard representation is x:x:x:x:x:x:x:x, where each x is a \textbf{hexadecimal} representation of a \textbf{16-bit} piece of the address. An example would be: \\47CD:1234:4422:ACO2:0022:1234:A456:0124.
@@ -724,7 +726,7 @@ Max threshold for host density is 87.5\%. This is where it starts getting proble
     \item Clearly, this form of shorthand can only be used for \textbf{one} set of contiguous 0s in an address to avoid ambiguity.
 \end{enumerate}
 
-\subsubsection{Route Aggregation}
+\subsection{Route Aggregation}
 IPv6 is classless, so implements CIDR as well. But, since there are so many addresses we have more hierarchy in the way the addresses are assigned. At the moment 001 prefix address are only assigned, whch means we still have 87.5\% addresses left that have not yet even been touched.
 
 \begin{figure}[H]
@@ -735,7 +737,7 @@ IPv6 is classless, so implements CIDR as well. But, since there are so many addr
 \end{figure}
 Problem may occur when two people connected tot he same router, but a go around is to broadcast both addresses to this and that part of the world, to create redundancy, and reduce load even.
 
-\subsubsection{Packet Format}
+\subsection{Packet Format}
 Even though ipv6 is more complex the header is simpler. It has a header length of 40bytes, despite the fact the addresses are 4 times as long. This is pretty nice, and is possible since people took notice of what protocol were quite redundant and not needed in ipv6.
 
 \begin{figure}[H]
@@ -746,7 +748,7 @@ Even though ipv6 is more complex the header is simpler. It has a header length o
 \end{figure}
 
 
-\subsubsection{Advanced Capabilities}
+\subsection{Advanced Capabilities}
 \begin{enumerate}
     \item Autoconfiguration: for IPv4 we always needed a DHCP. for IPv6 since the address sapce is so big we can any of these two:
     \begin{enumerate}
@@ -756,7 +758,7 @@ Even though ipv6 is more complex the header is simpler. It has a header length o
     \item Source-Directed Routing: Another of IPv6’s extension headers is the routing header. In the absence of this header, routing for IPv6 differs very little from that of IPv4 under CIDR. The routing header contains a list of IPv6 addresses that represent nodes or topological areas that the packet should visit en route to its destination. The reason are same as discussed in BGP.
 \end{enumerate}
 
-\subsection{Multicast}
+\section{Multicast}
 Normal IP communication, in which each packet must be addressed and sent to a single host, is not well suited to such applications. If an application has data to send to a group, it would have to send a separate packet with the identical data to each member of the group. This redundancy consumes more bandwidth than necessary. IP multicast is more scalable because it eliminates the redundant traffic (packets) that would have been sent many times over the same links, especially those near to the sending host.
 
 \textbf{Types of Multicast}
@@ -774,7 +776,7 @@ For both they need to communicate with the router to become a part of the group.
 
 As said before in IPv6 we have multicast addresses so deos IPv4.
 
-\subsection{Multicast Routing}
+\section{Multicast Routing}
 As all thing uni and packets, Multicast needs routing too.
 \begin{enumerate}
     \item \textbf{Distance Vector Multicast Routing Protocol (DVMRP):} If I get packet from Source S, and I get it from the best path, I send to all. This floods the network and this is bad. If the packet then comes from not the bes tnode, sine flooding is happening, I do not forward that.
@@ -802,8 +804,8 @@ As all thing uni and packets, Multicast needs routing too.
     
 \end{enumerate}
 
-\subsection{MobileIP}
-\subsubsection{Definition}
+\section{MobileIP}
+\subsection{Definition}
 \begin{enumerate}
     \item \textbf{Home network} The home network of a mobile device is the network within which the device receives its identifying IP address (home address).
     \item \textbf{Home address} The home address of a mobile device is the IP address assigned to the device within its home network.
@@ -814,7 +816,7 @@ As all thing uni and packets, Multicast needs routing too.
     \item \textbf{Binding} A binding is the association of the home address with a care-of address.
 \end{enumerate}
 
-\subsubsection{How work?}
+\subsection{How work?}
 So if I am sending a packet and I am not home, I send it to my agent, and he sends it to the node I wanted to send to, often using tunneling, i.e. it encapsulates my packet and sends it. If someone tries to send a packet to me, they send it to my home, then the home agent there tunnels the packet to my foreign agent who sends it to me, when I am away. This obviously requires a lot of registration.
 \begin{figure}[H]
     \centering
@@ -824,9 +826,9 @@ When a packet finally arrives at the foreign agent, it strips the extra IP heade
 \par
 What about traffic in the other direction (i.e., from mobile node to fixed node)? This turns out to be much easier. The mobile node just puts the IP address of the fixed node in the destination field of its IP packets while putting its permanent address in the source field, and the packets are forwarded to the fixed node using normal means. Of course, if both nodes in a conversation are mobile, then the procedures described above are used in each direction.
 
-\section{Chapter 5: End-to-End protocols}
+\chapter{Chapter 5: End-to-End protocols}
 
-\subsection{UDP}
+\section{UDP}
 Simple Demultiplexor - user Datagram Protocol. There are likely to be many processes running on any given host, so the protocol needs to add a level of demultiplexing, thereby allowing multiple application processes on each host to share the network.
 
 \textbf{How to know demultiplex?}
@@ -850,8 +852,8 @@ Simple Demultiplexor - user Datagram Protocol. There are likely to be many proce
     \item \textbf{UDP checksum:} UDP does not provide any reordering, flow control but does provide a checksum optional in IPv4, but mandatory in IPv6. This checksum to make sure the correct port is being sent to. The checksum takes in input the source IP, destination IP, protocol number, and UDP length. This forms what is called the psuedo header,
 \end{enumerate}
 
-\subsection{TCP}
-\subsubsection{End -To-End-Issues}
+\section{TCP}
+\subsection{End -To-End-Issues}
 UDP was simple. Here are things make TCp harder.
 \begin{enumerate}
     \item Need to start up and tear down the connection. since the resources need to be freed up.
@@ -862,7 +864,7 @@ UDP was simple. Here are things make TCp harder.
     \item TCP uses the sliding window algorithm on an end-to-end basis to provide reliable/ordered delivery. Another network only took care of hop to hop. That was bad since packets may not be delivered to intended place and extra work done by mid way nodes,. TCP packets only travel to network layer, but X.25 needed to travel to transport layer.
 \end{enumerate}
 
-\subsubsection{Segment Format}
+\subsection{Segment Format}
 \begin{enumerate}
     \item TCP is a byte-oriented protocol. Which means the sequcne numbers and acks are actually increments of bytes not packets.
     \item TCP’s demux key is given by the 4-tuple: (SrcPort, SrcIPAddr, DstPort, DstIPAddr)
@@ -870,14 +872,14 @@ UDP was simple. Here are things make TCp harder.
     \item Checksum field is used in exactly the same way as for UDP—it is computed over the TCP header, the TCP data, and the pseudoheader, which is made up of the source address, destination address, and length fields from the IP header.
 \end{enumerate}
 
-\subsubsection{Connection establishment and Termination}
+\subsection{Connection establishment and Termination}
 \begin{figure}[H]
     \centering
     \includegraphics[width = \textwidth]{Pictures/TCP.png}
 \end{figure}
 Learn how to read this, and the three way handshake.
 
-\subsubsection{Sliding Window Revisited}
+\subsection{Sliding Window Revisited}
 \begin{enumerate}
     \item Need to know advertised window only.
     \item Once buffer starts filling up on receiving end, it starts to tell the sender, that I do not have x space left but x - unprocessed bytes I have, where x is the original space it has. This way the sender does not overwhelm the receiver. This is called Control Flow. The receiver then uses this advertised window to calculate the effective windwow.
@@ -889,7 +891,7 @@ Learn how to read this, and the three way handshake.
     \item Keeping pipe full. with 16bits of sepeunce space we can only 64kb of data. How to resolve this? In TCP there is options called extended options. This allows a computer to shift the window size by an agreed amount to allow more sequence numbers.
 \end{enumerate}
 
-\subsubsection{To answer how to know when should I send data?}
+\subsection{To answer how to know when should I send data?}
 \begin{enumerate}
     \item Nagle's: says wait till I have full MSS. Option of shutting it off, and allow SWS.
     \item Original: Running average of sorts with weighting to understand rate of change. Then calculate o a timeout as twice the calculated RTT.
@@ -903,7 +905,7 @@ Learn how to read this, and the three way handshake.
         \item TimeOut = mu x EstimatedRTT + phi x Deviation where based on experience, mu is typically set to 1 and phi is set to 4.
     \end{enumerate}
 \end{enumerate}
-\subsubsection{TCP extensions}
+\subsection{TCP extensions}
 \begin{enumerate}
     \item Scaling Factor: increase the size of the window.
     \item Timestamp: TCP can read the actual system clock when it is about to send a segment, and put this time—think of it as a 32-bit timestamp—in the segment’s header. The receiver then echoes this timestamp back to the sender in its acknowledgment, and the sender subtracts this timestamp from the current time to measure the RTT.
@@ -911,12 +913,12 @@ Learn how to read this, and the three way handshake.
     \item SACK: Selective ACK, since cumulative ACKS are generally used.
 \end{enumerate}
 
-\subsection{RTP}
+\section{RTP}
 Basically, it is a protocol bult on top of UDP, since the real time applications should not be tied down to what is provided, since packet losses may want to be treated differently, like in VOIP, just ignore packet loss since re-transmission is not fast enough.
 
-\section{Chapter 6: Congestion Control}
+\chapter{Chapter 6: Congestion Control}
 
-\subsubsection{Queing Disciplines}
+\subsection{Queing Disciplines}
 \begin{figure}[H]
     \centering
     \includegraphics{Pictures/Queues.png}
@@ -942,7 +944,7 @@ Basically, it is a protocol bult on top of UDP, since the real time applications
     \end{figure}
 \end{enumerate}
 
-\subsubsection{TCP Congestion Control}
+\subsection{TCP Congestion Control}
 \begin{enumerate}
     \item Additive Increase, Multiplicative Decrease: for every ack until start threshold add 1 or some agrred number to congestion window, after that add 1 or some agreed number for every RTT if there is any ack. If packet loss, by timeout or triple dup ack, multiply the current congestion window by 0.5 or some number between 0 and 1, and set start threshold to this value, changing congestion window to 1, restart start threshold.
     \item Fast Transmit, Fast Recovery:
@@ -955,7 +957,7 @@ Basically, it is a protocol bult on top of UDP, since the real time applications
     \item TCP CUBIC: follow a cubic curve centered around last ssthr, this way I approach the ssthr carefully, but find the next ssthr quickly by exponential like growth.
 \end{enumerate}
 
-\subsubsection{Advanced Congestion Control}
+\subsection{Advanced Congestion Control}
 \begin{enumerate}
     \item DECBit: This is an active Queue Management Algorithm, since action taken actively. router puts a bit into a header, which then is echoed by the peers acking the fact router queue is about to start droping some packets if the rate of sending packets is this high. A router sets this bit in a packet if its average queue length is greater than or equal to 1 at the time the packet arrives. This average queue length is measured over a time interval that spans the last busy+idle cycle, plus the current busy cycle. (The router is busy when it is transmitting and idle when it is not.)
     \item Random Early Detection: Router is starts dropping packet at a probability $p$, which increases as queue length reaches carrying capacity, in order to force the peers to have triple dup ack situation which automatically reduces traffic. Relies on peers employing TCP.
@@ -985,7 +987,7 @@ Basically, it is a protocol bult on top of UDP, since the real time applications
     Reaction to ECE bit should be same as actual packet loss.
 \end{enumerate}
 
-\subsubsection{Quality of Service}
+\subsection{Quality of Service}
 Used for real time applications, where we need guarantee of service. In elastic applications delays are manageable, but for VOIP, etc. it is not. Real networks jitters and packets drops.
 
 \begin{enumerate}
@@ -1035,7 +1037,7 @@ Components needed to provide QOS:
     \end{enumerate}
 \end{enumerate}
 
-\subsubsection{IntServ, DiffServ}
+\subsection{IntServ, DiffServ}
 
 \begin{figure}[H]
     \centering
@@ -1047,10 +1049,10 @@ Components needed to provide QOS:
     \includegraphics[width = \textwidth]{Pictures/IntServDiffServ2.png}
 \end{figure}
 
-\section{Chapter 7: End-to-End data}
+\chapter{Chapter 7: End-to-End data}
 
 
-\section{Chapter 8: Network Security}
+\chapter{Chapter 8: Network Security}
 http://www.unixwiz.net/techtips/iguide-ipsec.html
 
 Encrypted using the private key of the sender. So if wrong, then not accepted, if yes considering a trust, we get the data.
@@ -1135,7 +1137,7 @@ sometimes only split horizon, and not poison reverse.
 **RQRQRQRQRQRQRQRQRQRQRQRQRQRQRQRQRQRQRQ**
 
 
-\section{Chapter 9: Applications}
+\chapter{Chapter 9: Applications}
 
 HTTP vers:
 1.0, 1.1
