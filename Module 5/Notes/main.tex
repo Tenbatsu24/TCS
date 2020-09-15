@@ -841,4 +841,109 @@ Reduced Instruction Computer
         \item Simple addressing Mode
     \end{enumerate}
 
+\section{Lecture 6 (and 5) ARC pointers}
+
+\begin{enumerate}
+    \item Not bytes, words
+    \item bit 13
+    \item simm13 - gives lower 13 bits
+    \item sethi needs to be followed by or or +
+    \item jumpl pc+4, r0
+    \item orn
+    \item 1 (op) (op3) 00
+    \item rtl instructions, fetch decode then
+\end{enumerate}
+
+\section{Lecture 7}
+\subsection{Levels of Computer}
+\begin{enumerate}
+    \item Architecture: Registers, micro-controlled processor, etc
+    \item Organisation: Timing
+    \item Physical: Wires, transistors
+\end{enumerate}
+
+\subsection{Definition}
+\begin{enumerate}
+    \item Bit: 1
+    \item Nibble: 4
+    \item Byte: 8
+    \item Half Word: 16
+    \item Word: 32
+    \item double: 64
+    \item quad: 128
+\end{enumerate}
+
+\subsection{Important Concepts}
+\subsubsection{Moore's Law}
+\subsubsection{Von Neuman Architecture}
+\paragraph{Has 5 Units}
+\begin{enumerate}
+    \item ALU
+    \item Input Unit
+    \item Output Unit
+    \item Memory Unit (for intermeddiate calculations)
+    \item Control Unit
+\end{enumerate}
+
+\paragraph{A refinement}
+\begin{enumerate}
+    \item CPU
+    \item memory
+    \item I/O unit
+    \item Buses:
+    \begin{enumerate}
+        \item Data
+        \item Control
+        \item Address
+        \item Power
+        \item Possibly I/O bus
+    \end{enumerate}
+\end{enumerate}
+
+\subsection{What is Bus?}
+\begin{enumerate}
+    \item A communication pathway connecting two or more devices
+    \item Often grouped to form system bus width
+    \item They are broadcast
+\end{enumerate}
+\paragraph{Data Bus}
+Transports data and instructions \\
+Data Bus width is key to performance
+
+
+\paragraph{Address Bus}
+Identifies the source or the destination, for ex. when CPU needs to read from the memory
+Address bus determines the maximum memory capacity of the system, i.e. the number of possible addressable places in RAM.
+
+\paragraph{Control Bus}
+\begin{enumerate}
+    \item Control and timing information
+    \begin{enumerate}
+        \item Memory read write
+        \item Interrupt Requests
+        \item Clock Signals
+    \end{enumerate}
+\end{enumerate}
+
+\subsubsection{Addressing}
+\begin{enumerate}
+    \item Involves all 3 buses
+    \begin{enumerate}
+        \item If want to access a memory location
+        \item Address Bus gives address
+        \item Data bus tells you the data, or writes
+        \item depending on the clock sync and information by controller.
+    \end{enumerate}
+    \item Uses the conventions of alignment
+    \begin{enumerate}
+        \item Use capacity of the data bus, as much as possible
+        \item So, if word is 32bits, for a given address we ignmore last 2 bits, and transport the 4 bytes.
+    \end{enumerate}
+    \item Thing to remember
+    \begin{enumerate}
+        \item Since we address the whole 32 bits, even if we want to store in a particular location, we end up overwriting the other 3 bytes, in case of storing exactly 8 bits. While writing. So we add BE flags byte enabled, to set all other vytes in the block to 0, and the active block to 1.
+        \item The processor will need to extract the correct path while reading data.
+    \end{enumerate}
+\end{enumerate}
+
 \end{document}
